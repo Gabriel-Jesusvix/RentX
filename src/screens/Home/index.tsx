@@ -65,18 +65,26 @@ export function Home() {
   }
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchCars() {
       try {
         const { data } = await api.get("/cars");
-        setCars(data);
+        if (isMounted) {
+          setCars(data);
+        }
       } catch (error) {
         console.log("Error dev:", error);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
     fetchCars();
-  }, [cars]);
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Evitar BackButton para Splash;
 

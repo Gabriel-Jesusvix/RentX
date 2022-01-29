@@ -29,6 +29,8 @@ interface AuthProviderProps {
 interface AuthContextData {
   user: User;
   signIn: (credentials: SignInCredentials) => Promise<void>;
+  signOut: () => Promise<void>;
+  updatedUser: (user: User) => Promise<void>;
 }
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -63,12 +65,49 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signOut() {
+    try {
+      const userCollection = database.get<ModelUser>("users");
+      await database.write(async () => {
+        //identificar user pelo id
+        const userSelected = await userCollection.find(data.id);
+        await userSelected.destroyPermanently();
+      });
+      setData({} as User);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async function updatedUser(user: User) {
+    try {
+      const userCollection = database.get<ModelUser>("users");
+      await database.write(async () => {
+        const userSelected = await userCollection.find(data.id);
+        await userSelected.update((userData) => {
+          (userData.name = user.name),
+            (userData.driver_license = user.driver_license);
+          userData.avatar = user.avatar;
+        });
+      });
+      setData(user);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   useEffect(() => {
     //loading dada user of database
     async function loadUserData() {
       const userCollection = database.get<ModelUser>("users");
       const response = await userCollection.query().fetch();
-      console.log("aqui", response);
+
+      if (response.length > 0) {
+        //existe usuario;
+        const userData = response[0]._raw as unknown as User;
+        api.defaults.headers["Authorization"] = `Bearer ${userData.token}`;
+        setData(userData);
+      }
     }
 
     loadUserData();
@@ -78,6 +117,8 @@ function AuthProvider({ children }: AuthProviderProps) {
       value={{
         user: data,
         signIn,
+        signOut,
+        updatedUser,
       }}
     >
       {children}

@@ -5,22 +5,22 @@ class User extends Model {
   static table = "users";
 
   @field("user_id")
-  user_id: string;
+  user_id!: string;
 
   @field("name")
-  name: string;
+  name!: string;
 
   @field("email")
-  email: string;
+  email!: string;
 
   @field("driver_license")
-  driver_license: string;
+  driver_license!: string;
 
   @field("avatar")
-  avatar: string;
+  avatar!: string;
 
   @field("token")
-  token: string;
+  token!: string;
 }
 
 export { User };
