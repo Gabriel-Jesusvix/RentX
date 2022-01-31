@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { useNavigation } from "@react-navigation/native";
-import { StatusBar, StyleSheet } from "react-native";
+import { Alert, StatusBar, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons/";
 import { RFValue } from "react-native-responsive-fontsize";
 import { RectButton, PanGestureHandler } from "react-native-gesture-handler";
-
+import NetInfo, { useNetInfo } from "@react-native-community/netinfo";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -20,16 +20,16 @@ import { Car } from "../../components/Car";
 import { CarDTO } from "../../dtos/CarDTO";
 
 import { api } from "../../services/api";
+import { LoadingAnimation } from "../../components/LoadingAnimation";
 
 import { Container, Header, TotalCars, HeaderContent, CarList } from "./styles";
-import { LoadingAnimation } from "../../components/LoadingAnimation";
 
 export function Home() {
   const theme = useTheme();
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const { navigate } = useNavigation();
-
+  const netInfo = useNetInfo();
   const positionY = useSharedValue(0);
   const positionX = useSharedValue(0);
   const myCarsButtonStyle = useAnimatedStyle(() => {
@@ -86,8 +86,13 @@ export function Home() {
     };
   }, []);
 
-  // Evitar BackButton para Splash;
-
+  useEffect(() => {
+    if (netInfo.isConnected) {
+      Alert.alert("Você está Online");
+    } else {
+      Alert.alert("Sem conexão");
+    }
+  }, [netInfo.isConnected]);
   return (
     <Container>
       <StatusBar

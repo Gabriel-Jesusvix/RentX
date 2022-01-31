@@ -16,6 +16,7 @@
     "@nozbe/watermelondb": "^0.24.0",
     "@react-native-async-storage/async-storage": "^1.15.15",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-community/netinfo": "6.0.2",
     "@react-navigation/bottom-tabs": "^5.x",
     "@react-navigation/native": "^5.x",
     "@react-navigation/stack": "^5.x",
