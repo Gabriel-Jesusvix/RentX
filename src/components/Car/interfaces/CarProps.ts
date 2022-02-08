@@ -1,6 +1,6 @@
 import { RectButtonProps } from "react-native-gesture-handler";
-import { CarDTO } from "../../../dtos/CarDTO";
+import { Car } from "../../../database/Models/Car";
 
 export interface CarProps extends RectButtonProps {
-  data: CarDTO;
+  data: Car;
 }
