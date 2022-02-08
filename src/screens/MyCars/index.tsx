@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useIsFocused } from "@react-navigation/core";
 import { StatusBar, FlatList } from "react-native";
 import { useTheme } from "styled-components";
 import { BackButton } from "../../components/BackButton";
@@ -46,10 +46,12 @@ export function MyCars() {
   const { goBack } = useNavigation();
   const [cars, setCars] = useState<DataProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const screenIsFocus = useIsFocused();
 
   function handleBack() {
     goBack();
   }
+
   useEffect(() => {
     async function fetchCars() {
       try {
@@ -69,7 +71,7 @@ export function MyCars() {
       }
     }
     fetchCars();
-  }, [cars]);
+  }, [screenIsFocus]);
 
   return (
     <Container>
