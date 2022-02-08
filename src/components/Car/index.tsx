@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import React from "react";
 import { View } from "react-native";
 
@@ -19,6 +20,8 @@ import {
 
 export function Car({ data, ...rest }: CarProps) {
   const MotorIcon = getAccessoryIcon(data.fuel_type);
+  const netInfo = useNetInfo();
+
   return (
     <Container {...rest}>
       <Details>
@@ -28,7 +31,9 @@ export function Car({ data, ...rest }: CarProps) {
         <About>
           <Rent>
             <Period>{data.period}</Period>
-            <Price>{`R$ ${data.price}`}</Price>
+            <Price>{`R$ ${
+              netInfo.isConnected === true ? data.price : "..."
+            }`}</Price>
           </Rent>
           <Type>
             <MotorIcon />

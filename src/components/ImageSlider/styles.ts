@@ -1,8 +1,6 @@
+import { Dimensions } from "react-native";
 import styled from "styled-components/native";
-import { getStatusBarHeight } from "react-native-iphone-x-helper";
-import { ImageIndexPropsStyle } from "./interfaces/ImageSliderProps";
-import { Dimensions, FlatList } from "react-native";
-
+import FastImage from "react-native-fast-image";
 export const Container = styled.View`
   width: 100%;
 `;
@@ -20,7 +18,7 @@ export const CarImageWrapper = styled.View`
   align-items: center;
 `;
 
-export const CarImage = styled.Image`
+export const CarImage = styled(FastImage)`
   width: 280px;
   height: 132px;
 `;

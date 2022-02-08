@@ -81,6 +81,12 @@ export const Accessories = styled.View`
   margin-top: 16px;
 `;
 
+export const OffilineInfo = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.primary_400};
+  color: ${({ theme }) => theme.colors.main};
+  font-size: ${RFValue(10)}px;
+  text-align: center;
+`;
 export const Footer = styled.View`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.background_secondary};
